@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { getRandomFact } from "./services/facts";
+import React from "react";
+import { useCatFact } from "./hooks/useCatFact";
+import { useCatImage } from "./hooks/useCatImage";
 
 function App() {
-  const [fact, setFact] = useState();
+  const { fact, refreshFact } = useCatFact();
+  const { imageUrl } = useCatImage({ fact });
 
   const handleClick = () => {
-    getRandomFact().then((newFact) => setFact(newFact));
+    refreshFact();
   };
-
-  useEffect(() => {
-    getRandomFact().then((newFact) => setFact(newFact));
-  }, []);
 
   return (
     <div>
       <h1>Hello world</h1>
       <button onClick={handleClick}>New fact</button>
       {fact && <p>{fact}</p>}
+      {imageUrl && <img src={imageUrl} alt="imagen random de api de gatos" />}
     </div>
   );
 }
